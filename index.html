@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NIC Lab | Neural Intelligence & Computation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -12,11 +11,12 @@
             --bg-color: #f8f9fa;
             --text-main: #2d3436;
             --text-sub: #636e72;
+            --news-date: #b2bec3;
         }
 
         * { box-sizing: border-box; }
         body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             margin: 0; padding: 0; 
             background-color: var(--bg-color); 
             color: var(--text-main);
@@ -28,7 +28,7 @@
             width: 300px;
             height: 100vh;
             background: white;
-            padding: 40px;
+            padding: 40px 20px;
             position: fixed;
             border-right: 1px solid #eee;
             display: flex;
@@ -38,103 +38,105 @@
             overflow-y: auto;
         }
 
-        .profile-img {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--bg-color);
-            margin-bottom: 20px;
-            background-color: #eee; /* 图片未加载时的占位色 */
-        }
-
+        .lab-logo { width: 180px; height: auto; margin-bottom: 20px; }
+        .profile-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg-color); margin-bottom: 15px; }
         
-        .lab-logo {
-            width: 200px; /* 这里从 80px 放大到了 120px */
-            height: auto;
-            margin-bottom: 20px;
-            transition: transform 0.3s; /* 增加一个微小的鼠标悬停动效 */
-        }
-        
-        .lab-logo:hover {
-            transform: scale(1.05); /* 鼠标指上去会轻微放大 */
-        }
+        h3 { margin: 10px 0 5px 0; font-size: 1.4em; }
+        .bi-lingual-title { color: var(--text-sub); font-size: 0.85em; margin-bottom: 20px; line-height: 1.4; }
 
-        nav { margin-top: 30px; width: 100%; }
-        nav a {
-            display: block;
-            padding: 12px;
-            color: var(--text-sub);
+        /* 按钮样式 */
+        .social-links { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .btn {
             text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: 0.3s;
-            border-radius: 8px;
-            margin-bottom: 5px;
         }
+        .btn-scholar { background: #4285f4; color: white; }
+        .btn-wechat { background: #07c160; color: white; cursor: pointer; position: relative; }
+        
+        /* 微信二维码悬浮窗 */
+        .wechat-qr {
+            display: none;
+            position: absolute;
+            bottom: 50px;
+            background: white;
+            padding: 10px;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .btn-wechat:hover .wechat-qr { display: block; }
+
+        nav { margin-top: 25px; width: 100%; border-top: 1px solid #eee; padding-top: 20px; }
+        nav a { display: block; padding: 10px; color: var(--text-sub); text-decoration: none; transition: 0.3s; border-radius: 8px; margin-bottom: 5px; }
         nav a:hover { background: #f0f7ff; color: var(--accent-color); }
 
         /* 主内容区 */
-        main {
-            margin-left: 300px;
-            padding: 60px 80px;
-            width: calc(100% - 300px);
-        }
-
+        main { margin-left: 300px; padding: 60px 80px; width: calc(100% - 300px); }
         .hero { margin-bottom: 60px; }
-        .hero h1 { font-size: 2.5em; margin: 0; color: var(--primary-color); }
-        .slogan { 
-            font-size: 1.2em; 
-            color: var(--accent-color); 
-            margin-top: 10px;
-            font-weight: 300;
-        }
+        .hero h1 { font-size: 2.2em; margin: 0; color: var(--primary-color); }
+        .slogan { font-size: 1.1em; color: var(--accent-color); margin-top: 10px; font-weight: 400; }
 
         section { margin-bottom: 50px; }
-        h2 { 
-            font-size: 1.8em; 
-            border-bottom: 2px solid #eee; 
-            padding-bottom: 10px; 
-            margin-bottom: 25px; 
-        }
+        h2 { font-size: 1.6em; border-left: 5px solid var(--accent-color); padding-left: 15px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; }
+        h2 span { font-size: 0.6em; color: var(--text-sub); font-weight: normal; margin-left: 10px; }
 
-        /* 卡片样式 */
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            margin-bottom: 20px;
-            transition: transform 0.2s;
-        }
-        .card:hover { transform: translateY(-5px); }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); margin-bottom: 20px; }
+        
+        /* News 样式 */
+        .news-item { margin-bottom: 15px; font-size: 0.95em; border-left: 2px solid #eee; padding-left: 15px; position: relative; }
+        .news-date { color: var(--news-date); font-weight: bold; margin-right: 10px; font-size: 0.85em; }
+
+        /* Research 方向样式 */
+        .research-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .res-card h4 { margin-top: 0; color: var(--accent-color); margin-bottom: 10px; }
+        .res-card p { font-size: 0.9em; line-height: 1.6; color: var(--text-sub); }
 
         .pub-title { font-weight: 600; color: var(--primary-color); display: block; }
-        .pub-authors { font-size: 0.9em; color: var(--text-sub); }
         .pub-venue { font-size: 0.9em; color: var(--accent-color); font-weight: 600; }
 
-        /* 移动端适配 */
-        @media (max-width: 900px) {
+        @media (max-width: 1000px) {
             body { flex-direction: column; }
             aside { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid #eee; }
             main { margin-left: 0; width: 100%; padding: 40px 20px; }
+            .research-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-
     <aside>
         <img src="images/logo.png" alt="NIC Lab Logo" class="lab-logo">
-        
         <img src="images/me.png" alt="Shangyang Li" class="profile-img">
         
-        <h3>Shangyang Li</h3>
-        <p style="color: #636e72; font-size: 0.9em;">Assistant Professor / PI<br>NIC Lab Director</p>
+        <h3>Shangyang Li (李尚阳)</h3>
+        <div class="bi-lingual-title">
+            Assistant Professor / PI <br>
+            助理教授 / 博士生导师
+        </div>
+
+        <div class="social-links">
+            <a href="https://scholar.google.com/citations?user=g77hKJcAAAAJ&hl=en&authuser=1" target="_blank" class="btn btn-scholar">Google Scholar</a>
+            <div class="btn btn-wechat">
+                Official WeChat (公众号)
+                <div class="wechat-qr">
+                    <img src="images/wechat_qr.jpg" alt="QR Code" style="width: 120px;">
+                    <p style="color: #333; font-size: 10px; margin: 5px 0 0 0;">Scan to Follow</p>
+                </div>
+            </div>
+        </div>
         
         <nav>
-            <a href="#about">About</a>
-            <a href="#team">Team</a>
-            <a href="#publications">Publications</a>
-            <a href="#contact">Contact</a>
+            <a href="#about">About / 简介</a>
+            <a href="#news">News / 动态</a>
+            <a href="#research">Research / 研究</a>
+            <a href="#team">Team / 团队</a>
+            <a href="#publications">Publications / 论文</a>
         </nav>
     </aside>
 
@@ -142,42 +144,61 @@
         <section id="about" class="hero">
             <h1>Neural Intelligence & Computation Lab (NIC Lab)</h1>
             <div class="slogan">Compute Brains. Design Intelligence. <br> 计算大脑，设计智能。</div>
-            <p style="margin-top: 30px; line-height: 1.8; color: var(--text-sub);">
-                NIC Lab 致力于神经科学与计算智能的交叉研究。我们探索大脑的计算原理和设计适用于真实场景的智能算法。
+            <p style="margin-top: 25px; line-height: 1.8; color: var(--text-sub);">
+                NIC Lab is dedicated to the intersection of <strong>neuroscience</strong> and <strong>computational intelligence</strong>. We explore the computational principles of the brain and design intelligent algorithms for real-world scenarios. <br>
+                NIC Lab 致力于神经科学与计算智能的交叉研究。我们通过探索大脑的计算原理，设计并开发适用于真实复杂场景的新一代智能算法。
             </p>
         </section>
 
-        <section id="team">
-            <h2>Team Members</h2>
+        <section id="news">
+            <h2>News <span>实验室动态</span></h2>
             <div class="card">
-                <strong>Prof. Shangyang Li</strong> — Principal Investigator
+                <div class="news-item"><span class="news-date">2026.01</span> Our latest research on Neural Coding was accepted by Nature Communications!</div>
+                <div class="news-item"><span class="news-date">2025.12</span> Prof. Li was invited to give a talk at the Brain-inspired Computing Forum.</div>
+                <div class="news-item"><span class="news-date">2025.11</span> Welcome new Ph.D. students joining NIC Lab!</div>
             </div>
-            <p style="color: var(--text-sub);">We are looking for motivated Ph.D. and Master students. Join us!</p>
+        </section>
+
+        <section id="research">
+            <h2>Research <span>研究方向</span></h2>
+            <div class="research-grid">
+                <div class="card res-card">
+                    <h4>Neural Coding <br> 神经编码</h4>
+                    <p>Exploring how biological neurons represent information across different scales. <br> 探索生物神经元如何在不同尺度下进行信息表征与处理。</p>
+                </div>
+                <div class="card res-card">
+                    <h4>Brain-inspired AI <br> 类脑智能</h4>
+                    <p>Developing novel AI algorithms based on the structural and functional principles of the brain. <br> 基于大脑结构与功能原理开发新型人工智能算法。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="team">
+            <h2>Team <span>团队成员</span></h2>
+            <div class="card">
+                <strong>Prof. Shangyang Li (李尚阳)</strong> — Principal Investigator / PI
+            </div>
+            <p style="color: var(--text-sub); font-size: 0.9em;">We are actively looking for motivated Ph.D. and Master students. <br> 课题组常年招收推免/报考硕士、博士研究生，欢迎联系！</p>
         </section>
 
         <section id="publications">
-            <h2>Selected Publications</h2>
+            <h2>Publications <span>发表论文</span></h2>
             <div class="card">
                 <span class="pub-title">Towards Efficient Brain-inspired Computing Architectures</span>
                 <span class="pub-authors">S. Li, et al.</span> <br>
-                <span class="pub-venue">Nature Communications, 2025</span>
-            </div>
-            <div class="card">
-                <span class="pub-title">Neural Coding Principles in High-dimensional Manifolds</span>
-                <span class="pub-authors">S. Li, et al.</span> <br>
-                <span class="pub-venue">NeurIPS, 2024</span>
+                <span class="pub-venue">Nature Communications, 2026</span>
             </div>
         </section>
 
         <section id="contact">
-            <h2>Contact</h2>
+            <h2>Contact <span>联系方式</span></h2>
             <div class="card">
-                <p>📍 Address: [Your University Address Here]</p>
-                <p>📧 Email: <a href="mailto:your-email@edu.cn" style="color: var(--accent-color);">your-email@edu.cn</a></p>
+                <p>📍 Address: [Your University/Institute Name], China</p>
+                <p>📧 Email: <a href="mailto:nic_lab@@163.com" style="color: var(--accent-color);">nic_lab@@163.com</a></p>
             </div>
         </section>
 
-        <footer style="color: #b2bec3; font-size: 0.8em; text-align: center; margin-top: 100px; padding-bottom: 20px;">
+        <footer style="color: #b2bec3; font-size: 0.8em; text-align: center; margin-top: 60px; padding-bottom: 20px;">
             &copy; 2026 NIC Lab. All Rights Reserved.
         </footer>
     </main>
